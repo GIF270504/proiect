@@ -14,28 +14,27 @@ def analizaculori(caleimagine):
     return {'rsu': mean_r, 'verde': mean_g, 'albastru': mean_b}
 # funcțiapentru vlasificarea imaginilor în funcție de culorile predominante
 def clasificareimagini(imaginedirector):
-    # inițializarea unui dicționar pentru a stoca imaginile clasificate pe culori
+    # crearea unui dicționar pentru a stoca imaginilepe culori
     cul = {'rosu': [], 'verde': [], 'albastru': []}
-    # inițializarea unui dicționar pentru aa stoca scorurole culorilor pentru fiecare imagine
+    # crearea unui dicționar pentru aa stoca scorurole culorilor pentru fiecare imagine
     imaginescor = defaultdict(dict)
     for numeimagine in os.listdir(imaginedirector):
         caleimagine = os.path.join(imaginedirector, numeimagine)
-        # verificarea dacă elementul iterat este un fișier
         if os.path.isfile(caleimagine):
             try:
-                # anAliza culorilor pentru imaginea curentă
+                # anAliza culorilor pentru imagine
                 scor = analizaculori(caleimagine)
                 # Adăugarea scorului la diionarul imaginescor
                 imaginescor[numeimagine] = scor
-                # determinarea culroii predominante pentru imaginea curentă
+                # determinarea culroii predominante pentru imagine
                 culpre = max(scor, key=scor.get)
-                # adăugarea numelui imaginii la lista corespunzătoare culorii predominante
+                #adăugarea numelui imaginii la lista cuc ulorii predominante
                 cul[culpre].append(numeimagine)
             except ValueError as e:
                 print(e)
     return cul, imaginescor
 
-# funcția pentrusalvarea rezultatelor într-un fișier JSON
+#usalvarea rezultatelor într-un fișier JSON
 def salvarejson(cul, imaginescor, outputfile):
     results = {
         'grupuri_culri': cul,
@@ -46,15 +45,14 @@ def salvarejson(cul, imaginescor, outputfile):
         json.dump(results, json_file, indent=4)
 # funcțiaprincipală a scriptului
 def main(imaginedirector, outputfile):
-    # apelarea fncției pentru clasificsrea imaginilor și obținerea rezultatelor
     cul, imaginescor = clasificareimagini(imaginedirector)
     salvarejson(cul, imaginescor, outputfile)
     print(f"Rezultatul salvat în {outputfile}")
 # verificarea dacă scriptul este rulat direct
 if __name__ == "__main__":
     # input de la utilizator pentru directprul imaginilor
-    imaginedirector = input("Introduceți drectorul imaginilor: ")
-    # numele fișierului în care se vor salva rezultatele
+    imaginedirector = input("introduceți drectorul imaginilor: ")
+    # numele fișierului unde se salveaza rezultatele
     outputfile = "culorimagine.json"
     main(imaginedirector, outputfile)
 
